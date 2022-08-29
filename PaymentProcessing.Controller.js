@@ -26,9 +26,9 @@ module.exports = class {
             .then(res=>res.json())
                 .then(res => { 
                 console.log(res)
-                this.sendCallBack ('success', req.body.merchantRef);
+                this.sendCallBack ('success', req.body.merchantReference);
             }).catch(err => { 
-                this.sendCallBack('error', req.body.merchantRef)
+                this.sendCallBack('error', req.body.merchantReference)
             })
         } catch (err) { 
             res.json({
