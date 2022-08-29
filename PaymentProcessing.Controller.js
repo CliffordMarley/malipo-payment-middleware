@@ -8,6 +8,8 @@ module.exports = class {
 
     RequestDeposit = async (req, res) => { 
         try {
+            console.log("Request received!")
+            console.log("Body:", req.body)
             res.json({
                 status: 'success',
                 message:'Payment request is processing...'
