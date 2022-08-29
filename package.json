@@ -1,0 +1,38 @@
+{
+  "name": "payment-integration",
+  "version": "1.0.0",
+  "description": "\"# malipo-payment-middleware\"",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CliffordMarley/malipo-payment-middleware.git"
+  },
+  "keywords": [
+    "Payment",
+    "Malipo",
+    "Airtel",
+    "Money",
+    "TNM",
+    "Mpamba",
+    "FDH",
+    "Wallet",
+    "NBM",
+    "Card"
+  ],
+  "author": "Clifford P. Mwale",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CliffordMarley/malipo-payment-middleware/issues"
+  },
+  "homepage": "https://github.com/CliffordMarley/malipo-payment-middleware#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "node-fetch": "^2.6.1",
+    "uuid": "^8.3.2"
+  }
+}
