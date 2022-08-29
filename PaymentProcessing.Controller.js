@@ -22,14 +22,12 @@ module.exports = class {
                 },
                 body:JSON.stringify(req.body)
             }
-            fetch(process.env.PAYMENT_URL, options)
-            .then(res=>res.json())
-                .then(res => { 
-                console.log(res)
-                this.sendCallBack ('success', req.body.merchantReference);
-            }).catch(err => { 
-                this.sendCallBack('error', req.body.merchantReference)
-            })
+            let response = await fetch(process.env.PAYMENT_URL, options)
+            response = await response.json()
+            
+            response.responseCode == 200 ?
+                this.sendCallBack('success', req.body.merchantReference) :
+                this.sendCallBack ('error', req.body.merchantReference)            
         } catch (err) { 
             res.json({
                 status: 'error',
@@ -38,12 +36,35 @@ module.exports = class {
         }
     }
 
-    sendCallBack = async (type, reference) => { 
+    sendCallBack = async (status, data) => { 
+        let interval
         try {
-            console.log("Type: %s", type)
-            console.log("Reference: %s", reference)
+            console.log("Sending %s callback for ref: %s",status, data.merchantReference)
+            data.status = status
+            const options = {
+                method: "PUT",
+                headers: {
+                    'Content-Type':"application/json"
+                },
+                body: JSON.stringify(data)
+            }
+            let response = await fetch(`${CORE_URL}/api/v1/transactions/callback`, options)
+            response = await response.json()
+            if (response.status == 'error') {
+                console.log ('Failed with Error: ', response.message);
+                console.log ('Retrying in callback for ref: %s in 15 seconds...');
+                setTimeout(() => {
+                    this.setCallback(status, data)
+                }, 15000)
+            } else { 
+                console.log('Callback successfully sent!')
+            }
         } catch (err) { 
-            console.log("Error: ",err)
+            console.log("Failed with Error: ", err.message)
+            console.log('Retrying in callback for ref: %s in 15 seconds...')
+            setTimeout (() => {
+                this.setCallback (status, data);
+            }, 15000);
         }
     }
 }
